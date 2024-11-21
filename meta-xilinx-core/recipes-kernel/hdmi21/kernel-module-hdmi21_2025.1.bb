@@ -13,7 +13,7 @@ SRC_URI = "git://github.com/Xilinx/hdmi21-modules.git;protocol=https;branch=${SR
 
 SRCREV = "5699556f9b03fd0a7c97ad2f970137b3e06c3bc5"
 
-S = "${WORKDIR}/git"
+S = "${UNPACKDIR}/git"
 
 COMPATIBLE_MACHINE = "^$"
 COMPATIBLE_MACHINE:zynqmp = ".*"
