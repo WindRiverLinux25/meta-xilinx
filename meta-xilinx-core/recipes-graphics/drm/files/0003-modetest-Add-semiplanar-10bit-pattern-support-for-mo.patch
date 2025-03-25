@@ -24,11 +24,11 @@ Index: libdrm-2.4.118/tests/modetest/buffers.c
  	  unsigned int handles[4], unsigned int pitches[4],
  	  unsigned int offsets[4], enum util_fill_pattern pattern)
  {
--	unsigned int virtual_height;
-+	unsigned int virtual_height, virtual_width;
+-	unsigned int virtual_height, xsub, ysub;
++	unsigned int virtual_height, virtual_width, xsub, ysub;
  	struct bo *bo;
  	unsigned int bpp;
- 	void *planes[3] = { 0, };
+ 	bool is_planar;
 @@ -154,6 +154,11 @@ bo_create(int fd, unsigned int format,
  		bpp = 10;
  		break;
@@ -41,43 +41,57 @@ Index: libdrm-2.4.118/tests/modetest/buffers.c
  	case DRM_FORMAT_ARGB4444:
  	case DRM_FORMAT_XRGB4444:
  	case DRM_FORMAT_ABGR4444:
-@@ -223,27 +228,41 @@ bo_create(int fd, unsigned int format,
+@@ -223,16 +228,32 @@ bo_create(int fd, unsigned int format,
  	case DRM_FORMAT_NV15:
  	case DRM_FORMAT_YUV420:
  	case DRM_FORMAT_YVU420:
 +		virtual_width = width;
- 		virtual_height = height * 3 / 2;
+ 		is_planar = true;
+ 		xsub = 2;
+ 		ysub = 2;
  		break;
  
 +	case DRM_FORMAT_XV15:
++		is_planar = true;
 +		virtual_width = (width * 32) / 30;
-+		virtual_height = height * 3 / 2;
++		xsub = 2;
++		ysub = 2;
 +		break;
 +
 +	case DRM_FORMAT_XV20:
++		is_planar = true;
 +		virtual_width = (width * 32) / 30;
-+		virtual_height = height * 2;
++		xsub = 2;
++		ysub = 1;
 +		break;
 +
  	case DRM_FORMAT_NV16:
  	case DRM_FORMAT_NV61:
  	case DRM_FORMAT_NV20:
+ 	case DRM_FORMAT_YUV422:
+ 	case DRM_FORMAT_YVU422:
 +		virtual_width = width;
- 		virtual_height = height * 2;
- 		break;
- 
- 	case DRM_FORMAT_NV24:
- 	case DRM_FORMAT_NV42:
+ 		is_planar = true;
+ 		xsub = 2;
+ 		ysub = 1;
+@@ -248,12 +269,14 @@ bo_create(int fd, unsigned int format,
  	case DRM_FORMAT_NV30:
+ 	case DRM_FORMAT_YUV444:
+ 	case DRM_FORMAT_YVU444:
 +		virtual_width = width;
- 		virtual_height = height * 3;
+ 		is_planar = true;
+ 		xsub = 1;
+ 		ysub = 1;
  		break;
  
  	default:
 +		virtual_width = width;
- 		virtual_height = height;
- 		break;
- 	}
+ 		is_planar = false;
+ 		xsub = 1;
+ 		ysub = 1;
+@@ -264,7 +287,7 @@ bo_create(int fd, unsigned int format,
+ 	if (is_planar)
+ 		virtual_height += height * 2 / xsub / ysub;
  
 -	bo = bo_create_dumb(fd, width, virtual_height, bpp);
 +	bo = bo_create_dumb(fd, virtual_width, virtual_height, bpp);
@@ -85,9 +99,9 @@ Index: libdrm-2.4.118/tests/modetest/buffers.c
  		return NULL;
  
 @@ -276,6 +295,8 @@ bo_create(int fd, unsigned int format,
- 	case DRM_FORMAT_NV61:
- 	case DRM_FORMAT_NV15:
+ 	case DRM_FORMAT_NV42:
  	case DRM_FORMAT_NV20:
+ 	case DRM_FORMAT_NV30:
 +	case DRM_FORMAT_XV15:
 +	case DRM_FORMAT_XV20:
  		offsets[0] = 0;
