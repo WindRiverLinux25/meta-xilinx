@@ -8,7 +8,7 @@ internal arguments from of_property_for_each_u32()"), the argument count
 is reduced from 5 to 3, so we need to adjust this in the out-of-tree
 source code of mali driver.
 
-Upstream-Status: inappropriate
+Upstream-Status: Inappropriate [WRLinux Specific]
 
 Signed-off-by: Quanyang Wang <quanyang.wang@windriver.com>
 ---
