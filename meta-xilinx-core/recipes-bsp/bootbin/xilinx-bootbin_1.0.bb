@@ -270,8 +270,10 @@ do_deploy() {
     ln -sf ${BOOTBIN_BASE_NAME}.bin ${DEPLOYDIR}/boot.bin
 
     install -d ${DEPLOYDIR}/boot.bin-extracted
-    install -m 0644 ${B}/* ${DEPLOYDIR}/boot.bin-extracted/.
-    rm -f ${DEPLOYDIR}/boot.bin-extracted/BOOT.bin
+    install -m 0644 ${B}/*.elf ${DEPLOYDIR}/boot.bin-extracted/.
+    install -m 0644 ${B}/*.bit ${DEPLOYDIR}/boot.bin-extracted/.
+    install -m 0644 ${B}/*.bif ${DEPLOYDIR}/boot.bin-extracted/.
+    install -m 0644 ${B}/*.dtb ${DEPLOYDIR}/boot.bin-extracted/.
 }
 
 do_deploy:append:versal () {
