@@ -4,7 +4,7 @@ LICENSE = "CLOSED"
 LIC_FILES_CHKSUM = "file://LICENSE.md;md5=c7774c4d8c75e31e42f030d5369a1112"
 COMPATIBLE_HOST = ".*-linux"
 
-S = "${WORKDIR}"
+S = "${UNPACKDIR}"
 
 SRC_URI = "https://petalinux.xilinx.com/sswreleases/isp-media-server/2025.1/04302301/isp-media-server.tar.gz"
 SRC_URI[sha256sum]="e46aed6fcea995cc01ff7540ddae0b60ac997da93424ca249fc48d3b3e527ded"

@@ -4,7 +4,7 @@ LICENSE="CLOSED"
 LIC_FILES_CHKSUM = "file://LICENSE.md;md5=ae254519d1cbab1bfd89ed89f6f6268d"
 COMPATIBLE_HOST = ".*-linux"
 
-S = "${WORKDIR}"
+S = "${UNPACKDIR}"
 
 SRC_URI = "https://petalinux.xilinx.com/sswreleases/isp-firmware/2025.1/05142025/isp_fw.tar.gz"
 SRC_URI[sha256sum]="ff29206d5218bf17f9986fd178e68e475e6cd13aa75f786dfaf69bb4724e7de3"
