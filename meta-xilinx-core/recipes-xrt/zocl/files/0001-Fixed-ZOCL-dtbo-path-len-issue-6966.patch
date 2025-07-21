@@ -3,6 +3,7 @@ From: Saifuddin Kaijar <54270703+saifuddin-xilinx@users.noreply.github.com>
 Date: Mon, 29 Aug 2022 10:25:06 +0530
 Subject: [PATCH] Fixed ZOCL dtbo path len issue (#6966)
 
+Upstream-Status: Pending
 ---
  src/runtime_src/core/edge/drm/zocl/include/zocl_xclbin.h | 3 ++-
  src/runtime_src/core/edge/drm/zocl/zocl_xclbin.c         | 7 ++++---

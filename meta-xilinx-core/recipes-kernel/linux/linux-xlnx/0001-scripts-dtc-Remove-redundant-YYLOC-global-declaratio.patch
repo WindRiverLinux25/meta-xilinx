@@ -30,6 +30,7 @@ Signed-off-by: David Gibson <david@gibson.dropbear.id.au>
 [robh: cherry-pick from upstream]
 Cc: stable@vger.kernel.org
 Signed-off-by: Rob Herring <robh@kernel.org>
+Upstream-Status: Pending
 ---
  scripts/dtc/dtc-lexer.l | 1 -
  1 file changed, 1 deletion(-)

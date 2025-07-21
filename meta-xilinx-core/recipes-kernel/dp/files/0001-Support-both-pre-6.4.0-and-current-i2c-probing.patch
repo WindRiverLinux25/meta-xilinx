@@ -4,6 +4,7 @@ Date: Thu, 16 May 2024 20:31:29 -0600
 Subject: [PATCH] Support both pre 6.4.0 and current i2c probing
 
 Signed-off-by: Mark Hatle <mark.hatle@amd.com>
+Upstream-Status: Pending
 ---
  dp/xfmc/dp141.c                          | 13 +++++++++++++
  dp/xfmc/fmc.c                            | 13 +++++++++++++

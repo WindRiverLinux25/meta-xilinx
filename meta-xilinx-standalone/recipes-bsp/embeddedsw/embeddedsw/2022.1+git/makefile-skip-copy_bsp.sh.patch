@@ -6,7 +6,7 @@ have already done.  Avoid this.
 YP integration specific
 
 Signed-off-by: Mark Hatle <mark.hatle@xilinx.com>
-
+Upstream-Status: Inappropriate [Yocto specific]
 diff --git a/lib/sw_apps/zynqmp_pmufw/src/Makefile b/lib/sw_apps/zynqmp_pmufw/src/Makefile
 index 1750c0a329..17f6a545ea 100644
 --- a/lib/sw_apps/zynqmp_pmufw/src/Makefile

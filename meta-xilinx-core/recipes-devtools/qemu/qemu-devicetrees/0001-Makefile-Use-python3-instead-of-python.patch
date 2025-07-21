@@ -4,6 +4,7 @@ Date: Mon, 8 Feb 2021 16:32:34 -0800
 Subject: [PATCH] Makefile:Use python3 instead of python
 
 Signed-off-by: Sai Hari Chandana Kalluri <chandana.kalluri@xilinx.com>
+Upstream-Status: Pending
 ---
  Makefile | 12 ++++++------
  1 file changed, 6 insertions(+), 6 deletions(-)

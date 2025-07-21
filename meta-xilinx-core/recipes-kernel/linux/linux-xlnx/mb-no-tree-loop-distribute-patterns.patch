@@ -29,6 +29,7 @@ Initmem setup node 0 [mem 0x0000000080000000-0x00000000bfffffff]
 <hang>
 
 Signed-off-by: Mark Hatle <mark.hatle@xilinx.com>
+Upstream-Status: Pending
 
 diff --git a/arch/microblaze/Makefile b/arch/microblaze/Makefile
 index bb980891816d..e368c35ad21c 100644

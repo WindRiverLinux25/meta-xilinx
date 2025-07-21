@@ -17,6 +17,7 @@ Signed-off-by: Jonathan Stroud <jonathan.stroud@amd.com>
 Added contentxt and renamed the patch
 
 Signed-off-by: Mark Hatle <mark.hatle@amd.com>
+Upstream-Status: Inappropriate [Yocto specific]
 ---
  include/configs/amd_versal2.h | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)

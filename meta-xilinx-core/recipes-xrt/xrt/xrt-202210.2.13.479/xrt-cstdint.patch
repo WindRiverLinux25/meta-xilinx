@@ -7,6 +7,7 @@ In GCC 13.1 usage of uint64 and similar will result in an error without
  #include <cstdint>
 
 Signed-off-by: Mark Hatle <mark.hatle@amd.com>
+Upstream-Status: Pending
 ---
  src/runtime_src/core/common/time.h                               | 1 +
  src/runtime_src/core/edge/common/aie_parser.h                    | 1 +

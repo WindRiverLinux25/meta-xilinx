@@ -12,6 +12,7 @@ Acked-by: Nicole Baze <nicole.baze@xilinx.com>
 Backported to 2022.1
 
 Signed-off-by: Mark Hatle <mark.hatle@amd.com>
+Upstream-Status: Pending
 ---
  lib/sw_services/xilpm/src/versal/server/xpm_domain_iso.c | 7 ++++++-
  1 file changed, 6 insertions(+), 1 deletion(-)

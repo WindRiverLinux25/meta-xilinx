@@ -9,6 +9,7 @@ have already done.  Avoid this.
 YP integration specific
 
 Signed-off-by: Mark Hatle <mark.hatle@amd.com>
+Upstream-Status: Inappropriate [Yocto specific]
 ---
  lib/sw_apps/versal_plm/src/versal/Makefile       | 4 ++--
  lib/sw_apps/versal_plm/src/versal_net/Makefile   | 4 ++--

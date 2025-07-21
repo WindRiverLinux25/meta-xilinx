@@ -4,6 +4,7 @@ In GCC 13.1 usage of uint64 and similar will result in an error without
  #include <cstdint>
 
 Signed-off-by: Mark Hatle <mark.hatle@amd.com>
+Upstream-Status: Pending
 
 Index: src/runtime_src/core/edge/user/aie/common_layer/adf_api_config.h
 ===================================================================

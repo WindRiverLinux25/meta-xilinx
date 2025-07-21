@@ -7,6 +7,7 @@ Added NULL check for pointer Device before attempting to dereference the pointer
 
 Signed-off-by: Jesus De Haro <jesus.de-haro@xilinx.com>
 Acked-by: Nicole Baze <nicole.baze@xilinx.com>
+Upstream-Status: Pending
 ---
  lib/sw_services/xilpm/src/versal/server/xpm_domain_iso.c | 7 ++++++-
  1 file changed, 6 insertions(+), 1 deletion(-)

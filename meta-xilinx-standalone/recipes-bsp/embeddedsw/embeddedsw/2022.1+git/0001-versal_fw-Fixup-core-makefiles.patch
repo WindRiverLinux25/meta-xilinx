@@ -9,6 +9,7 @@ command line build version.  This Yocto Project specific will allow this
 behavior.
 
 Signed-off-by: Mark Hatle <mark.hatle@xilinx.com>
+Upstream-Status: Inappropriate [Yocto specific]
 ---
  lib/sw_apps/versal_plm/misc/Makefile   | 6 ++++--
  lib/sw_apps/versal_psmfw/misc/Makefile | 6 ++++--

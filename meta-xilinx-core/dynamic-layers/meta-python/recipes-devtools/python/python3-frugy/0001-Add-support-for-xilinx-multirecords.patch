@@ -4,6 +4,7 @@ Date: Fri, 18 Apr 2025 13:48:12 -0600
 Subject: [PATCH] Add support for xilinx multirecords
 
     Signed-off-by: Jonathan Stroud <jonathan.stroud@amd.com>
+Upstream-Status: Pending
 ---
  frugy/areas.py               |   7 +-
  frugy/cli.py                 |   8 +--

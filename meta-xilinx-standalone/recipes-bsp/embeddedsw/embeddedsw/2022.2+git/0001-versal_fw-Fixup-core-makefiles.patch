@@ -9,6 +9,7 @@ command line build version.  This patch preserves the default while
 allowing it to be overriden as necessary.
 
 Signed-off-by: Mark Hatle <mark.hatle@amd.com>
+Upstream-Status: Inappropriate [Yocto specific]
 ---
  lib/sw_apps/versal_plm/misc/versal/Makefile     | 6 ++++--
  lib/sw_apps/versal_plm/misc/versal_net/Makefile | 6 ++++--

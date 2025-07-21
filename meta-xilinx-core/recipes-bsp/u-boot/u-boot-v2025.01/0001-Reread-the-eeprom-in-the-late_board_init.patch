@@ -7,6 +7,7 @@ The pointer to the board_info gets reset when switching to executing out
 of DDR, so re-read the eeprom.
 
 Signed-off-by: Jonathan Stroud <jonathan.stroud@amd.com>
+Upstream-Status: Pending
 ---
  board/xilinx/common/board.c | 2 ++
  1 file changed, 2 insertions(+)
