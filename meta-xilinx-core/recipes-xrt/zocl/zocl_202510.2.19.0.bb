@@ -18,6 +18,8 @@ COMPATIBLE_MACHINE:versal-2ve-2vm = ".*"
 
 S = "${WORKDIR}/git/src/runtime_src/core/edge/drm/zocl"
 
+KERNEL_CC:append = " -fmacro-prefix-map=${S}/../../../=${TARGET_DBGSRC_DIR}"
+
 inherit module
 
 pkg_postinst_ontarget:${PN}() {
