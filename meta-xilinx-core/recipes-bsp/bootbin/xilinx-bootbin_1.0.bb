@@ -261,12 +261,20 @@ do_deploy() {
 
     install -d ${DEPLOYDIR}/boot.bin-extracted
     install -m 0644 ${B}/*.elf ${DEPLOYDIR}/boot.bin-extracted/.
-    install -m 0644 ${B}/*.bit ${DEPLOYDIR}/boot.bin-extracted/.
     install -m 0644 ${B}/*.bif ${DEPLOYDIR}/boot.bin-extracted/.
     install -m 0644 ${B}/*.dtb ${DEPLOYDIR}/boot.bin-extracted/.
 }
 
+do_deploy:append:zynqmp () {
+    install -m 0644 ${B}/*.bit ${DEPLOYDIR}/boot.bin-extracted/.
+}
+
+do_deploy:append:zynq () {
+    install -m 0644 ${B}/*.bit ${DEPLOYDIR}/boot.bin-extracted/.
+}
+
 do_deploy:append:versal () {
+    install -m 0644 ${B}/*.pdi ${DEPLOYDIR}/boot.bin-extracted/.
 
     install -m 0644 ${B}/BOOT_bh.bin ${DEPLOYDIR}/${BOOTBIN_BASE_NAME}_bh.bin
     ln -sf ${BOOTBIN_BASE_NAME}_bh.bin ${DEPLOYDIR}/BOOT-${MACHINE}_bh.bin
@@ -276,6 +284,8 @@ do_deploy:append:versal () {
 }
 
 do_deploy:append:versal-net () {
+    install -m 0644 ${B}/*.pdi ${DEPLOYDIR}/boot.bin-extracted/.
+
     install -m 0644 ${B}/BOOT_bh.bin ${DEPLOYDIR}/${BOOTBIN_BASE_NAME}_bh.bin
     ln -sf ${BOOTBIN_BASE_NAME}_bh.bin ${DEPLOYDIR}/BOOT-${MACHINE}_bh.bin
 
@@ -285,6 +295,7 @@ do_deploy:append:versal-net () {
 }
 
 do_deploy:append:versal-2ve-2vm() {
+    install -m 0644 ${B}/*.pdi ${DEPLOYDIR}/boot.bin-extracted/.
 
     install -m 0644 ${B}/BOOT_bh.bin ${DEPLOYDIR}/${BOOTBIN_BASE_NAME}_bh.bin
     ln -sf ${BOOTBIN_BASE_NAME}_bh.bin ${DEPLOYDIR}/BOOT-${MACHINE}_bh.bin
