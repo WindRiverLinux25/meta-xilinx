@@ -16,6 +16,7 @@ SRC_URI += " \
     file://0009-Patch-MicroBlaze-Removing-the-Assembly-implementatio.patch \
     file://0010-Fixed-the-bug-in-crtinit.s-for-MB-64.patch \
     file://0011-Use-port-specific-sbrk.patch \
+    file://0001-fix-implicit-function-declaration.patch \
     "
 
 EXTRA_OECONF:append:xilinx-standalone = " \
