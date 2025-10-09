@@ -659,7 +659,7 @@ index 7c98331f8a9..b0b4c1b2614 100644
 +					regnum); 
  }
  
- static const struct frame_unwind microblaze_frame_unwind =
+ static const struct frame_unwind_legacy microblaze_frame_unwind (
 @@ -621,7 +653,106 @@ microblaze_stabs_argument_has_addr (struct gdbarch *gdbarch, struct type *type)
    return (type->length () == 16);
  }

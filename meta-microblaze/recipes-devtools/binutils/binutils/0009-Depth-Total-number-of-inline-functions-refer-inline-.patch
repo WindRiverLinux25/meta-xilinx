@@ -35,7 +35,7 @@ index 597507e53cd..aed5f2ec30c 100644
 +++ b/gdb/microblaze-tdep.c
 @@ -513,16 +513,8 @@ microblaze_analyze_prologue (struct gdbarch *gdbarch, CORE_ADDR pc,
  static CORE_ADDR
- microblaze_unwind_pc (struct gdbarch *gdbarch, frame_info_ptr next_frame)
+ microblaze_unwind_pc (struct gdbarch *gdbarch, const frame_info_ptr &next_frame)
  {
 -  gdb_byte buf[4];
    CORE_ADDR pc;
@@ -66,7 +66,7 @@ index 597507e53cd..aed5f2ec30c 100644
 -  default_frame_sniffer
 +  default_frame_sniffer,
 +  NULL,
- };
+ );
  
  static CORE_ADDR
 -- 

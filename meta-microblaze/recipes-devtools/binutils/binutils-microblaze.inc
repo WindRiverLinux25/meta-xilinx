@@ -62,4 +62,5 @@ SRC_URI += " \
     file://0054-Roll-back-an-improvement-which-inlines-target_gdbarc.patch \
     file://0055-fix-microblaze-linux-nat.patch \
     file://0056-Microblaze_Fix_regression_introduced_during_2024.2.patch \
+    file://0001-fix-incompatible-pointer-types.patch \
 "

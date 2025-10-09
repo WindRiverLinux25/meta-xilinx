@@ -24,7 +24,7 @@ index cb99e5bc7b1..72f14e28f54 100644
  
 -	  if (offset >= sizeof_g_packet || (offset + reg_size > sizeof_g_packet))
 +	  if (offset >= sizeof_g_packet)
- 	    rsa->regs[i].in_g_packet = 0;
+ 	    rsa->regs[i].in_g_packet = false;
  	  else if (offset + reg_size > sizeof_g_packet)
  	    error (_("Truncated register %d in remote 'g' packet"), i);
 -- 

@@ -224,7 +224,7 @@ index 45262aef909..bdc6db79726 100644
    return p;
  }
  
-+get_field_imm16 (struct string_buf *buf, long instr)
++static char *get_field_imm16 (struct string_buf *buf, long instr)
 +{
 +  char *p = strbuf (buf);
 +

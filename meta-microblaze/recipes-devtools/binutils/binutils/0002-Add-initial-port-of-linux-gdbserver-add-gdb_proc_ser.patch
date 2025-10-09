@@ -1,4 +1,4 @@
-From aebe2fdb45467fe4a07874cc310e441a38c23f84 Mon Sep 17 00:00:00 2001
+From fa91dbd8c23e519760213f32de572cbf98ad6bc3 Mon Sep 17 00:00:00 2001
 From: Mahesh Bodapati <mbodapat@xilinx.com>
 Date: Mon, 10 Oct 2022 15:07:22 +0530
 Subject: [PATCH 02/56] Add initial port of linux gdbserver add
@@ -59,7 +59,7 @@ index da71675b201..877537d06ef 100644
  mips*-*-netbsdaout* | mips*-*-knetbsd*-gnu)
  			gdb_host=nbsd ;;
 diff --git a/gdb/features/Makefile b/gdb/features/Makefile
-index cda6a49d563..8ac30d8cea3 100644
+index 32341f71815..0af9d67c2f7 100644
 --- a/gdb/features/Makefile
 +++ b/gdb/features/Makefile
 @@ -46,6 +46,7 @@
@@ -67,9 +67,9 @@ index cda6a49d563..8ac30d8cea3 100644
  WHICH = mips-linux mips-dsp-linux \
  	mips64-linux mips64-dsp-linux \
 +	microblaze-linux \
- 	nios2-linux \
  	or1k-linux \
  	rs6000/powerpc-32 \
+ 	rs6000/powerpc-32l rs6000/powerpc-altivec32l rs6000/powerpc-e500l \
 diff --git a/gdb/features/microblaze-linux.xml b/gdb/features/microblaze-linux.xml
 new file mode 100644
 index 00000000000..688a3f83d1e
@@ -90,7 +90,7 @@ index 00000000000..688a3f83d1e
 +  <xi:include href="microblaze-core.xml"/>
 +</target>
 diff --git a/gdb/microblaze-linux-tdep.c b/gdb/microblaze-linux-tdep.c
-index 7d620a3688b..d25100ef867 100644
+index ae33cb5c014..9160b4ad464 100644
 --- a/gdb/microblaze-linux-tdep.c
 +++ b/gdb/microblaze-linux-tdep.c
 @@ -37,6 +37,22 @@
@@ -150,7 +150,7 @@ index 7d620a3688b..d25100ef867 100644
  
  void _initialize_microblaze_linux_tdep ();
 diff --git a/gdb/microblaze-tdep.c b/gdb/microblaze-tdep.c
-index fc83634d1e6..3ff7ec644b6 100644
+index f254a54305c..28a647e940b 100644
 --- a/gdb/microblaze-tdep.c
 +++ b/gdb/microblaze-tdep.c
 @@ -128,7 +128,38 @@ microblaze_fetch_instruction (CORE_ADDR pc)
@@ -208,7 +208,7 @@ index fc83634d1e6..3ff7ec644b6 100644
 +
  }
 diff --git a/gdb/microblaze-tdep.h b/gdb/microblaze-tdep.h
-index 0b4a5a3f472..56736b9b0c9 100644
+index 892e5b3b849..e9f57e97c26 100644
 --- a/gdb/microblaze-tdep.h
 +++ b/gdb/microblaze-tdep.h
 @@ -118,6 +118,8 @@ struct microblaze_frame_cache
@@ -220,7 +220,7 @@ index 0b4a5a3f472..56736b9b0c9 100644
 +#define MICROBLAZE_BREAKPOINT_LE {0x18, 0x00, 0x0c, 0xba}
 +
  
- #endif /* microblaze-tdep.h */
+ #endif /* GDB_MICROBLAZE_TDEP_H */
 diff --git a/gdb/regformats/microblaze-linux.dat b/gdb/regformats/microblaze-linux.dat
 new file mode 100644
 index 00000000000..b5b49f485cd

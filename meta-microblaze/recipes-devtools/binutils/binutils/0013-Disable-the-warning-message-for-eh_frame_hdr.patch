@@ -28,8 +28,8 @@ index 9a504234163..5e393558293 100644
       abfd, sec);
 +}
    hdr_info->u.dwarf.table = false;
-   free (sec_info);
   success:
+   _bfd_elf_munmap_section_contents (sec, ehbuf);
 -- 
 2.34.1
 

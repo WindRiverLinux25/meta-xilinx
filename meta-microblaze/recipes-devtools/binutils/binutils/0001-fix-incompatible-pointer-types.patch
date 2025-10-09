@@ -1,0 +1,65 @@
+From 0fe7e18937280e52f5ae5c51f42c55c9fba544ed Mon Sep 17 00:00:00 2001
+From: Quanyang Wang <quanyang.wang@windriver.com>
+Date: Thu, 9 Oct 2025 10:21:24 +0800
+Subject: [PATCH] fix incompatible-pointer-types
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+This patch is to fix the following error:
+    | ../../gas/config/tc-microblaze.c:1692:41: error: passing argument 2 of ‘parse_reg’ from incompatible pointer type [-Wincompatible-pointer-types]
+    |  1692 |         op_end = parse_reg (op_end + 1, &immed);  /* Get rfslN.  */
+    |       |                                         ^~~~~~
+    |       |                                         |
+    |       |                                         long long unsigned int *
+
+Upstream-Status: Pending
+
+Signed-off-by: Quanyang Wang <quanyang.wang@windriver.com>
+---
+ gas/config/tc-microblaze.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/gas/config/tc-microblaze.c b/gas/config/tc-microblaze.c
+index bb5f78f4..0102443a 100644
+--- a/gas/config/tc-microblaze.c
++++ b/gas/config/tc-microblaze.c
+@@ -410,7 +410,7 @@ md_begin (void)
+   opcode_hash_control = str_htab_create ();
+ 
+   /* Insert unique names into hash table.  */
+-  for (opcode = (struct microblaze_opcodes *)microblaze_opcodes; opcode->name; opcode ++)
++  for (opcode = microblaze_opcodes; opcode->name; opcode ++)
+     {
+       if (strcmp (prev_name, opcode->name))
+ 	{
+@@ -1546,7 +1546,7 @@ md_assemble (char * str)
+           reg1 = 0;
+         }
+       if (strcmp (op_end, ""))
+-        op_end = parse_reg (op_end + 1, &immed);  /* Get rfslN.  */
++        op_end = parse_reg (op_end + 1, (unsigned *)&immed);  /* Get rfslN.  */
+       else
+ 	{
+           as_fatal (_("Error in statement syntax"));
+@@ -1689,7 +1689,7 @@ md_assemble (char * str)
+           reg1 = 0;
+         }
+       if (strcmp (op_end, ""))
+-        op_end = parse_reg (op_end + 1, &immed);  /* Get rfslN.  */
++        op_end = parse_reg (op_end + 1, (unsigned *)&immed);  /* Get rfslN.  */
+       else
+ 	{
+           as_fatal (_("Error in statement syntax"));
+@@ -1707,7 +1707,7 @@ md_assemble (char * str)
+ 
+     case INST_TYPE_RFSL:
+       if (strcmp (op_end, ""))
+-        op_end = parse_reg (op_end + 1, &immed);  /* Get rfslN.  */
++        op_end = parse_reg (op_end + 1, (unsigned *)&immed);  /* Get rfslN.  */
+       else
+ 	{
+           as_fatal (_("Error in statement syntax"));
+-- 
+2.40.0
+

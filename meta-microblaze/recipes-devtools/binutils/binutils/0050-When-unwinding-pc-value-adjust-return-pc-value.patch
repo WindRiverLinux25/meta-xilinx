@@ -86,7 +86,7 @@ index 6dcdeee76b3..2507cfe540f 100644
 +#endif 
  }
  
- static const struct frame_unwind microblaze_frame_unwind =
+ static const struct frame_unwind_legacy microblaze_frame_unwind (
 -- 
 2.34.1
 

@@ -35,8 +35,8 @@ index d12f8746611..ee606908bae 100644
  	$(srcdir)/linux-m68k-low.cc \
 +        $(srcdir)/linux-microblaze-low.cc \
  	$(srcdir)/linux-mips-low.cc \
- 	$(srcdir)/linux-nios2-low.cc \
  	$(srcdir)/linux-or1k-low.cc \
+ 	$(srcdir)/linux-ppc-low.cc \
 -- 
 2.34.1
 

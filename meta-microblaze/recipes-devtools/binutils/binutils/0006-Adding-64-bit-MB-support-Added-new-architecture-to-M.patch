@@ -522,7 +522,7 @@ index 022ce365c59..7e7c4bf471d 100644
  
 @@ -3580,8 +3691,6 @@ microblaze_elf_add_symbol_hook (bfd *abfd,
  #define elf_backend_finish_dynamic_symbol	microblaze_elf_finish_dynamic_symbol
- #define elf_backend_size_dynamic_sections	microblaze_elf_size_dynamic_sections
+ #define elf_backend_late_size_sections		microblaze_elf_late_size_sections
  #define elf_backend_add_symbol_hook		microblaze_elf_add_symbol_hook
 -
 -#define elf_backend_grok_prstatus               microblaze_elf_grok_prstatus
@@ -1048,7 +1048,7 @@ index d086debc4f8..f34b0fa9fd4 100644
 +#endif
 +
  static void
- microblaze_linux_sigtramp_cache (frame_info_ptr next_frame,
+ microblaze_linux_sigtramp_cache (const frame_info_ptr &next_frame,
  				 struct trad_frame_cache *this_cache,
 @@ -147,8 +151,8 @@ microblaze_linux_init_abi (struct gdbarch_info info,
  
