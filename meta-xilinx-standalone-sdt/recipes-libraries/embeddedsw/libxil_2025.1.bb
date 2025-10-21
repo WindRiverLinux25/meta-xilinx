@@ -26,6 +26,7 @@ ESW_COMPONENT_NAME = "libxil.a"
 
 DEPENDS += "xilstandalone "
 MACHINE_FEATURES:remove = "aiengine dfeccf dfeequ dfemix dfeprach rfdc dfeofdm"
+MACHINE_FEATURES:remove = "ext3 pci usbgadget usbhost vfat keyboard network"
 REQUIRED_MACHINE_FEATURES = "${MACHINE_FEATURES}"
 PACKAGECONFIG ?= "${MACHINE_FEATURES}"
 
