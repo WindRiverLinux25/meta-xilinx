@@ -18,6 +18,10 @@ COMPATIBLE_MACHINE:versal-2ve-2vm = ".*"
 
 S = "${WORKDIR}/git/src/runtime_src/core/edge/drm/zocl"
 
+SRC_URI += " \
+	file://0001-zocl-fix-sleeping-function-called-from-atomic-contex.patch \
+"
+
 KERNEL_CC:append = " -fmacro-prefix-map=${S}/../../../=${TARGET_DBGSRC_DIR}"
 
 inherit module

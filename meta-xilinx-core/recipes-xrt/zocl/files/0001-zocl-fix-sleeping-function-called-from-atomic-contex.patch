@@ -1,0 +1,122 @@
+From a2667be35b10b96b8eb9f93220f8a72171fb560a Mon Sep 17 00:00:00 2001
+From: Quanyang Wang <quanyang.wang@windriver.com>
+Date: Wed, 26 Nov 2025 09:19:59 +0800
+Subject: [PATCH] zocl: fix sleeping function called from atomic context
+
+In zocl_irq_intc_add(), the function request_irq() is called while
+holding a spinlock with interrupts disabled, causing "sleeping function
+called from invalid context" when CONFIG_DEBUG_ATOMIC_SLEEP is enabled.
+
+The calltrace is appended as following:
+
+    BUG: sleeping function called from invalid context at include/linux/sched/mm.h:321
+    in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 478, name: lenet_aie_xrt.e
+    preempt_count: 1, expected: 0
+    RCU nest depth: 0, expected: 0
+    CPU: 1 UID: 0 PID: 478 Comm: lenet_aie_xrt.e Tainted: G           O       6.12.58-yocto-standard #1
+    Tainted: [O]=OOT_MODULE
+    Hardware name: Xilinx Versal vck190 Eval board rev1.1 (DT)
+    Call trace:
+     dump_backtrace.part.0+0xdc/0xf0
+     show_stack+0x20/0x38
+     dump_stack_lvl+0x60/0x80
+     dump_stack+0x18/0x28
+     __might_resched+0x12c/0x160
+     __might_sleep+0x50/0x90
+     __kmalloc_cache_noprof+0x1c0/0x430
+     request_threaded_irq+0x94/0x1b0
+     zocl_irq_intc_add+0xc8/0x130 [zocl]
+     cu_probe+0x188/0x2c0 [zocl]
+     platform_probe+0x70/0xe8
+     really_probe+0xc4/0x2d0
+     __driver_probe_device+0x80/0x130
+     driver_probe_device+0xc0/0x180
+     __device_attach_driver+0xc0/0x148
+     bus_for_each_drv+0x90/0x100
+     __device_attach+0xa8/0x1a0
+     device_initial_probe+0x1c/0x30
+     bus_probe_device+0xb0/0xc0
+     device_add+0x560/0x748
+     platform_device_add+0x104/0x260
+     subdev_create_cu+0xf8/0x1c8 [zocl]
+     zocl_create_cu+0x194/0x298 [zocl]
+     zocl_xclbin_read_axlf+0x434/0x7e0 [zocl]
+     zocl_read_axlf_ioctl+0x98/0xf0 [zocl]
+     drm_ioctl_kernel+0xc8/0x140
+     drm_ioctl+0x2d4/0x4e0
+     __arm64_sys_ioctl+0xb4/0x100
+     invoke_syscall+0x5c/0x128
+     el0_svc_common.constprop.0+0x48/0xf8
+     do_el0_svc+0x24/0x40
+     el0_svc+0x30/0xf8
+     el0t_64_sync_handler+0x120/0x130
+     el0t_64_sync+0x190/0x198
+
+Move request_irq() outside the spinlock to fix this error. And do the
+same thing to free_irq().
+
+Upstream-Status: Pending
+
+Signed-off-by: Quanyang Wang <quanyang.wang@windriver.com>
+---
+ src/runtime_src/core/edge/drm/zocl/zert/zocl_xgq_intc.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/src/runtime_src/core/edge/drm/zocl/zert/zocl_xgq_intc.c b/src/runtime_src/core/edge/drm/zocl/zert/zocl_xgq_intc.c
+index a891f184e..e1cba07d0 100644
+--- a/zert/zocl_xgq_intc.c
++++ b/zert/zocl_xgq_intc.c
+@@ -66,6 +66,7 @@ static int zintc_probe(struct platform_device *pdev)
+ 		return -ENOMEM;
+ 	zintc->zei_pdev = pdev;
+ 	zintc->zei_num_irqs = num_irqs;
++	spin_lock_init(&zintc->zei_lock);
+ 	platform_set_drvdata(pdev, zintc);
+ 
+ 	/* Ready to turn on interrupts! */
+@@ -118,25 +119,25 @@ static int zocl_irq_intc_add(struct platform_device *pdev, u32 id, irq_handler_t
+ 	spin_lock_irqsave(&zintc->zei_lock, irqflags);
+ 
+ 	if (h->zeih_cb) {
+-		ret = -EINVAL;
+-		goto unlock_and_out;
++		spin_unlock_irqrestore(&zintc->zei_lock, irqflags);
++		return -EINVAL;
+ 	}
++	spin_unlock_irqrestore(&zintc->zei_lock, irqflags);
+ 
+ 	ret = request_irq(h->zeih_irq, zintc_isr, 0, ZINTC_DRV_NAME, h);
+ 	if (ret) {
+ 		zintc_err(zintc, "failed to add isr for IRQ: %d: %d", h->zeih_irq, ret);
+-		goto unlock_and_out;
++		return ret;
+ 	}
+ 
+ 	zintc_info(zintc, "managing IRQ %d", h->zeih_irq);
++	spin_lock_irqsave(&zintc->zei_lock, irqflags);
+ 	h->zeih_cb = cb;
+ 	h->zeih_arg = arg;
+ 	h->zeih_enabled = true;
+-
+-unlock_and_out:
+ 	spin_unlock_irqrestore(&zintc->zei_lock, irqflags);
+ 
+-	return ret;
++	return 0;
+ }
+ 
+ static void zocl_irq_intc_remove(struct platform_device *pdev, u32 id)
+@@ -152,9 +153,9 @@ static void zocl_irq_intc_remove(struct platform_device *pdev, u32 id)
+ 	h->zeih_cb = NULL;
+ 	h->zeih_arg = NULL;
+ 	h->zeih_enabled = false;
+-	free_irq(h->zeih_irq, h);
+ 
+ 	spin_unlock_irqrestore(&zintc->zei_lock, irqflags);
++	free_irq(h->zeih_irq, h);
+ }
+ 
+ static void zocl_irq_intc_config(struct platform_device *pdev, u32 id, bool enabled)
+-- 
+2.43.0
+
