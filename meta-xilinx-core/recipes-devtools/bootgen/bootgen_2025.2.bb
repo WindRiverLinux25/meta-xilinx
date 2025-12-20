@@ -16,6 +16,10 @@ SRCREV = "0e336a00dcff5842648f4a1e9f919abf7c960d97"
 BRANCHARG = "${@['nobranch=1', 'branch=${BRANCH}'][d.getVar('BRANCH', True) != '']}"
 SRC_URI = "${REPO};${BRANCHARG}"
 
+SRC_URI:append = " \
+       file://0001-bootgen-fix-header-file-missing.patch \
+"
+
 do_install() {
     install -d ${D}${bindir}
     install -Dm 0755 ${S}/build/bin/bootgen ${D}${bindir}
