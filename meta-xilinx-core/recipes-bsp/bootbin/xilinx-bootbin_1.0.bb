@@ -63,8 +63,6 @@ BIF_BITSTREAM_ATTR ?= "${@bb.utils.contains('MACHINE_FEATURES', 'fpga-overlay', 
 
 S = "${UNPACKDIR}"
 
-do_patch[noexec] = "1"
-
 def create_bif(config, attrflags, attrimage, ids, common_attr, biffd, d):
     arch = d.getVar("SOC_FAMILY")
     bb.error("create_bif function not defined for arch: %s" % (arch))
@@ -135,7 +133,8 @@ def create_versal_bif(config, attrflags, attrimage, ids, common_attr, biffd, d):
     for id, string in id_dict.items():
         biffd.write("\timage {\n")
         if id != '0':
-            biffd.write("\t id = " + id + ", name=apu_ss\n")
+            name = d.getVarFlag("BIF_PARTITION_NAME", id) or "apu_ss"
+            biffd.write("\t id = " + id + ", name=" + name + "\n")
         biffd.write(string)
         biffd.write("\t}\n")
     return
@@ -190,7 +189,7 @@ python do_configure() {
                 try:
                     fname = d.expand(attrimage[part])
                 except:
-                    bb.error('BIF_PARTITION_ATTR[%s] not defined, but referenced in BIF_PARTITION_ATTR', part)
+                    bb.error('BIF_PARTITION_ATTR[%s] not defined, but referenced in BIF_PARTITION_ATTR' % part)
 
                 dest = os.path.join(d.getVar('B'), os.path.basename(fname))
                 print('Copy BIF_PARTITION_IMAGE[%s] %s -> %s' % (part, fname, dest))

@@ -16,6 +16,20 @@ SRC_URI:append:versal-2ve-2vm = "\
     ${@bb.utils.contains('MACHINE_FEATURES', 'optee', 'file://linux-optee.cfg', '', d)}\
     "
 
+SRC_URI_RISCV = "\
+    file://risc-v-isa-clear.cfg \
+    ${@bb.utils.contains(    "TUNE_FEATURES", "rv 32 i m a", "file://risc-v-isa-rv32i.cfg", "", d)} \
+    ${@bb.utils.contains(    "TUNE_FEATURES", "rv 64 i m a", "file://risc-v-isa-rv64i.cfg", "", d)} \
+    ${@bb.utils.contains(    "TUNE_FEATURES", "f d",         "file://risc-v-isa-fpu.cfg",   "", d)} \
+    ${@bb.utils.contains(    "TUNE_FEATURES", "c",           "file://risc-v-isa-c.cfg",     "", d)} \
+    ${@bb.utils.contains(    "TUNE_FEATURES", "v",           "file://risc-v-isa-v.cfg",     "", d)} \
+    ${@bb.utils.contains_any("TUNE_FEATURES", "b zbb",       "file://risc-v-isa-zbb.cfg",   "", d)} \
+    ${@bb.utils.contains(    "TUNE_FEATURES", "zicbom",      "file://risc-v-isa-zicbom.cfg",   "", d)} \
+    "
+
+SRC_URI:append:riscv32 = "${SRC_URI_RISCV}"
+SRC_URI:append:riscv64 = "${SRC_URI_RISCV}"
+
 SRCREV_machine ?= "${SRCREV}"
 SRCREV_meta ?= "eeb5d0c9dd5e2928835c633644426ee357fbce12"
 SRCREV_FORMAT = "machine"
@@ -46,18 +60,22 @@ inherit kernel-simpleimage
 
 # Default to be only compatible with specific machines or soc families
 COMPATIBLE_MACHINE ?= "^$"
+COMPATIBLE_MACHINE:microblaze = ".*"
+COMPATIBLE_MACHINE:riscv32 = ".*"
+COMPATIBLE_MACHINE:riscv64 = ".*"
 COMPATIBLE_MACHINE:zynq = ".*"
 COMPATIBLE_MACHINE:zynqmp = ".*"
-COMPATIBLE_MACHINE:microblaze = ".*"
 COMPATIBLE_MACHINE:versal = ".*"
 COMPATIBLE_MACHINE:versal-net = ".*"
 COMPATIBLE_MACHINE:versal-2ve-2vm = ".*"
 
 # Use DEFCONFIGs for configuring linux-xlnx kernels
 KCONFIG_MODE ?= "alldefconfig"
-KBUILD_DEFCONFIG:zynqmp ?= "xilinx_defconfig"
-KBUILD_DEFCONFIG:zynq ?= "xilinx_zynq_defconfig"
 KBUILD_DEFCONFIG:microblaze ?= "mmu_defconfig"
+KBUILD_DEFCONFIG:riscv32 ?= "qemu-riscv32_smode_defconfig"
+KBUILD_DEFCONFIG:riscv64 ?= "qemu-riscv64_smode_defconfig"
+KBUILD_DEFCONFIG:zynq ?= "xilinx_zynq_defconfig"
+KBUILD_DEFCONFIG:zynqmp ?= "xilinx_defconfig"
 KBUILD_DEFCONFIG:versal ?= "xilinx_defconfig"
 KBUILD_DEFCONFIG:versal-net ?= "xilinx_defconfig"
 KBUILD_DEFCONFIG:versal-2ve-2vm ?= "xilinx_defconfig"
@@ -71,3 +89,11 @@ KERNEL_FEATURES:append:versal-net = "${@bb.utils.contains('DISTRO_FEATURES', 'xe
 KERNEL_FEATURES:append:versal-2ve-2vm = "${@bb.utils.contains('DISTRO_FEATURES', 'xen', ' features/xen/xen.scc', '', d)} features/xilinx/hdmi-module/hdmi-module.scc"
 
 KERNEL_FEATURES:append = " ${@bb.utils.contains('DISTRO_FEATURES', 'virtualization', ' features/ocicontainer/ocicontainer.scc', '', d)}"
+
+# To enable lttng, we need kprobes
+KERNEL_FEATURES_KPROBES = " features/kprobes"
+
+# Not supported on Microblaze
+KERNEL_FEATURES_KPROBES:microblaze = ""
+
+KERNEL_FEATURES:append = "${KERNEL_FEATURES_KPROBES}"

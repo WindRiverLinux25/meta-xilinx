@@ -6,7 +6,7 @@ LIC_FILES_CHKSUM = " \
 "
 BRANCH = "2024.2"
 SRC_URI = "git://github.com/Xilinx/RAFT;protocol=https;branch=${BRANCH}"
-SRCREV = "ed65c678fb02d92f2623a749649e37a18427f0de"
+SRCREV = "d85fa20691c51cf6541f01424631f1b49c8c019a"
 
 inherit update-rc.d systemd
 
@@ -14,7 +14,7 @@ S = "${WORKDIR}/git"
 COMPATIBLE_MACHINE = "^$"
 COMPATIBLE_MACHINE:zcu208-zynqmp = "${MACHINE}"
 COMPATIBLE_MACHINE:zcu216-zynqmp = "${MACHINE}"
-COMPATIBLE_MACHINE:system-controller = "${MACHINE}"
+COMPATIBLE_MACHINE:zynqmp-generic = "${MACHINE}"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
@@ -56,7 +56,7 @@ do_install() {
 
 PACKAGECONFIG:append:zcu208-zynqmp = "raftnotebooks raftstartup"
 PACKAGECONFIG:append:zcu216-zynqmp = "raftnotebooks raftstartup"
-PACKAGECONFIG:append:system-controller = "raftstartupsc"
+PACKAGECONFIG:append:zynqmp-generic = "raftstartupsc"
 
 FILES:${PN} += " \
     ${datadir}/raft/* \

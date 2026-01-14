@@ -24,6 +24,9 @@ BIF_PARTITION_IMAGE[base-pdi] ?= "${RECIPE_SYSROOT}/boot/base-design.pdi"
 BIF_PARTITION_ATTR[plmfw] ?= "type=bootloader"
 BIF_PARTITION_IMAGE[plmfw] ?= "${RECIPE_SYSROOT}/boot/plmfw.elf"
 
+# Specify BIF image name for given ID
+BIF_PARTITION_NAME[0x1c000000] ?= "apu_ss"
+
 # Specify BIF partition attributes for device-tree
 BIF_PARTITION_ATTR[device-tree] ?= "type=raw, load=0x1000000"
 BIF_PARTITION_IMAGE[device-tree] ?= "${RECIPE_SYSROOT}/boot/devicetree/system-top.dtb"
@@ -40,8 +43,8 @@ BIF_PARTITION_IMAGE[arm-trusted-firmware] ?= "${RECIPE_SYSROOT}/boot/arm-trusted
 BIF_PARTITION_ID[arm-trusted-firmware] ?= "0x1c000000"
 
 # Specify BIF partition attributes for optee
-BIF_PARTITION_ATTR[optee-os] ?= "core=a78-0, cluster=0, exception_level = el-1, trustzone"
-BIF_PARTITION_IMAGE[optee-os] ?= "${RECIPE_SYSROOT}/${nonarch_base_libdir}/firmware/tee.elf"
+BIF_PARTITION_ATTR[optee-os] ?= "core=a78-0, cluster=0, exception_level = el-1, trustzone, load=0x1800000"
+BIF_PARTITION_IMAGE[optee-os] ?= "${RECIPE_SYSROOT}/${nonarch_base_libdir}/firmware/tee-raw.bin"
 BIF_PARTITION_ID[optee-os] ?= "0x1c000000"
 
 # Specify BIF partition attributes for asufw

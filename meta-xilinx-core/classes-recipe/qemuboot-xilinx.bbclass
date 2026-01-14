@@ -31,7 +31,7 @@ QEMU_HW_SD_DRIVE_INDEX ?= "1"
 QEMU_HW_SD_DRIVE_INDEX:zynq ?= "0"
 QEMU_HW_SD_DRIVE_INDEX:versal-net ?= "0"
 
-inherit qemuboot
+inherit_defer qemuboot
 
 def qemu_target_binary(data):
     package_arch = data.getVar("PACKAGE_ARCH")
@@ -70,7 +70,7 @@ def qemu_add_extra_args(data):
         if kernel_name:
             qb_extra_args = ' -device loader,file=%s,addr=%s,force-raw=on' % (kernel_image, kernel_loadaddr)
             qb_extra_args += ' -device loader,file=%s,addr=%s,force-raw=on' % (bootscr_image, bootscr_loadaddr)
-        if soc_family in ('versal', 'versal-net', 'versal-2ve-2vm'):
+        if soc_family in ('zynqmp', 'versal', 'versal-net', 'versal-2ve-2vm'):
             qb_extra_args += ' -boot mode=%s' % boot_mode
     else:
         if soc_family in ('zynqmp', 'versal', 'versal-net', 'versal-2ve-2vm'):
@@ -81,10 +81,12 @@ def qemu_rootfs_params(data, param):
     initramfs_image = data.getVar('INITRAMFS_IMAGE') or ""
     bundle_image = data.getVar('INITRAMFS_IMAGE_BUNDLE') or ""
     soc_family = data.getVar('SOC_FAMILY') or ""
-    tune_features = (data.getVar('TUNE_FEATURES') or []).split()
+    tune_features = (data.getVar('TUNE_FEATURES') or '').split()
     sd_index = data.getVar('QEMU_HW_SD_DRIVE_INDEX') or ""
     if 'microblaze' in tune_features:
         soc_family = 'microblaze'
+    elif 'rv' in tune_features:
+        soc_family = 'microblaze-v'
 
     if param == 'rootfs':
         return 'none' if bundle_image == "1" else ''
@@ -92,6 +94,7 @@ def qemu_rootfs_params(data, param):
     elif param == 'fstype':
         fstype_dict = {
             "microblaze": "cpio.gz",
+            "microblaze-v": "ext4",
             "zynq": "cpio.gz",
             "zynqmp": "cpio.gz.u-boot",
             "versal": "cpio.gz.u-boot.qemu-sd-fatimg",
@@ -99,7 +102,7 @@ def qemu_rootfs_params(data, param):
             "versal-2ve-2vm": "cpio.gz.u-boot.qemu-sd-fatimg"
         }
         if not initramfs_image:
-            image_fs = data.getVar('IMAGE_FSTYPES')
+            image_fs = (data.getVar('IMAGE_FSTYPES') or '').split()
             if 'wic.qemu-sd' in image_fs:
                 return 'wic.qemu-sd'
         if soc_family not in fstype_dict:

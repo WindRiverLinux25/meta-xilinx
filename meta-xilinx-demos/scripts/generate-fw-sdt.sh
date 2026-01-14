@@ -2,11 +2,18 @@
 
 ### The following table controls the automatic generated of the firmware demos
 ### Machine                 Recipe
-#M# vek280-pl-bram-gpio-fw  recipes-firmware/vek280-pl-bram-uart-gpio-fw/vek280-pl-bram-uart-gpio-fw_1.0-2025.1.bb
-#M# zcu104-pl-vcu-fw        recipes-firmware/zcu104-pl-vcu-fw/zcu104-pl-vcu-fw_1.0-2025.1.bb
-#M# zcu111-pl-bram-gpio-fw  recipes-firmware/zcu111-pl-bram-gpio-fw/zcu111-pl-bram-gpio-fw_1.0-2025.1.bb
-#M# vck190-pl-bram-gpio-fw  recipes-firmware/vck190-pl-bram-gpio-fw/vck190-pl-bram-gpio-fw_1.0-2025.1.bb
-#M# vrk160-pl-bram-gpio-fw  recipes-firmware/vrk160-pl-bram-gpio-fw/vrk160-pl-bram-gpio-fw_1.0-2025.1.bb
+#M# vck190-pl-bram-gpio-fw  recipes-firmware/vck190-pl-bram-gpio-fw/vck190-pl-bram-gpio-fw_1.0-2025.2.bb
+#M# vek280-pl-bram-gpio-fw  recipes-firmware/vek280-pl-bram-gpio-fw/vek280-pl-bram-gpio-fw_1.0-2025.2.bb
+#M# zcu111-pl-bram-gpio-fw  recipes-firmware/zcu111-pl-bram-gpio-fw/zcu111-pl-bram-gpio-fw_1.0-2025.2.bb
+#M# vek385-pl-bram-gpio-fw  recipes-firmware/vek385-pl-bram-gpio-fw/vek385-pl-bram-gpio-fw_1.0-2025.2.bb
+#M# zcu106-pl-bram-gpio-fw  recipes-firmware/zcu106-pl-bram-gpio-fw/zcu106-pl-bram-gpio-fw_1.0-2025.2.bb
+#M# zc702-pl-bram-gpio-fw   recipes-firmware/zc702-pl-bram-gpio-fw/zc702-pl-bram-gpio-fw_1.0-2025.2.bb
+#M# zcu104-pl-bram-gpio-fw  recipes-firmware/zcu104-pl-bram-gpio-fw/zcu104-pl-bram-gpio-fw_1.0-2025.2.bb
+#M# vmk180-pl-bram-gpio-fw  recipes-firmware/vmk180-pl-bram-gpio-fw/vmk180-pl-bram-gpio-fw_1.0-2025.2.bb
+#M# vpk120-pl-bram-gpio-fw  recipes-firmware/vpk120-pl-bram-gpio-fw/vpk120-pl-bram-gpio-fw_1.0-2025.2.bb
+#M# zcu102-pl-bram-gpio-fw  recipes-firmware/zcu102-pl-bram-gpio-fw/zcu102-pl-bram-gpio-fw_1.0-2025.2.bb
+#M# vrk160-pl-bram-gpio-fw  recipes-firmware/vrk160-pl-bram-gpio-fw/vrk160-pl-bram-gpio-fw_1.0-2025.2.bb
+#M# vek385-revb-pl-bram-gpio-fw recipes-firmware/vek385-revb-pl-bram-gpio-fw/vek385-revb-pl-bram-gpio-fw_1.0-2025.2.bb
 
 this=$(realpath $0)
 
@@ -70,7 +77,7 @@ for mach in ${!MACHINES[@]}; do
   echo
 
   url=${URLS[${mach}]}
-  url=$(echo $url | sed 's,https://petalinux.xilinx.com/sswreleases/.*/sdt,https://artifactory.xilinx.com/artifactory/petalinux-hwproj-dev/sdt,')
+  url=$(echo $url | sed 's,https://edf.amd.com/sswreleases/.*/sdt,https://artifactory.xilinx.com/artifactory/petalinux-hwproj-dev/sdt,')
 
   wget $url -O ${conf_path}/output.sdt
   sha=$(sha256sum ${conf_path}/output.sdt | cut -d ' ' -f 1)

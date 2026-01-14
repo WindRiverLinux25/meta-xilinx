@@ -5,9 +5,9 @@ LIC_FILES_CHKSUM = "file://LICENSE.md;md5=003bf8ee942bb6256905b58e9b1b19c2"
 
 PV .= "+git"
 
-BRANCH ?= "xlnx_rel_v2025.1"
+BRANCH ?= "xlnx_rel_v2025.2"
 REPO   ?= "git://github.com/Xilinx/vcu2-ctrl-sw.git;protocol=https"
-SRCREV = "8bc7b4c27e2420d9d88cbdbbc0150a45cfe97957"
+SRCREV = "b50d11f9ffde915218e5d2de0722b42ac5bd261b"
 
 BRANCHARG = "${@['nobranch=1', 'branch=${BRANCH}'][d.getVar('BRANCH', True) != '']}"
 SRC_URI = "${REPO};${BRANCHARG}"
