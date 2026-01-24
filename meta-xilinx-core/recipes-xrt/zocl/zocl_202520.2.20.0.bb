@@ -29,3 +29,7 @@ pkg_postinst_ontarget:${PN}() {
   echo "Loading new XRT Linux kernel modules"
   modprobe zocl
 }
+
+SRC_URI += " \
+       file://0001-zocl-fix-sleeping-function-called-from-atomic-contex.patch \
+"
