@@ -265,11 +265,15 @@ do_deploy() {
 }
 
 do_deploy:append:zynqmp () {
-    install -m 0644 ${B}/*.bit ${DEPLOYDIR}/boot.bin-extracted/.
+    if [ -f ${B}/*.bit ]; then
+		install -m 0644 ${B}/*.bit ${DEPLOYDIR}/boot.bin-extracted/.
+    fi
 }
 
 do_deploy:append:zynq () {
-    install -m 0644 ${B}/*.bit ${DEPLOYDIR}/boot.bin-extracted/.
+    if [ -f ${B}/*.bit ]; then
+		install -m 0644 ${B}/*.bit ${DEPLOYDIR}/boot.bin-extracted/.
+    fi
 }
 
 do_deploy:append:versal () {
